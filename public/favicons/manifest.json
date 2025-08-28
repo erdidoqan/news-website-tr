@@ -1,0 +1,27 @@
+{
+  "lastUpdated": "2025-01-27T13:52:00.000Z",
+  "siteName": "Haber Merkezi",
+  "favicons": [
+    {
+      "name": "favicon-16x16",
+      "size": "16x16",
+      "filename": "favicon-16x16.png",
+      "localPath": "/favicons/favicon-16x16.png",
+      "originalUrl": "fallback"
+    },
+    {
+      "name": "favicon-32x32",
+      "size": "32x32",
+      "filename": "favicon-32x32.png",
+      "localPath": "/favicons/favicon-32x32.png",
+      "originalUrl": "fallback"
+    },
+    {
+      "name": "apple-touch-icon",
+      "size": "180x180",
+      "filename": "apple-touch-icon.png",
+      "localPath": "/favicons/apple-touch-icon.png",
+      "originalUrl": "fallback"
+    }
+  ]
+}
