@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 
 interface StoryCardProps {
@@ -9,6 +10,7 @@ interface StoryCardProps {
   category: string
   publishedAt: string
   size?: "small" | "medium" | "large"
+  href?: string
 }
 
 export function StoryCard({
@@ -19,6 +21,7 @@ export function StoryCard({
   category,
   publishedAt,
   size = "medium",
+  href,
 }: StoryCardProps) {
   const sizeClasses = {
     small: "h-48",
@@ -32,7 +35,7 @@ export function StoryCard({
     large: "text-2xl",
   }
 
-  return (
+  const content = (
     <article className="group cursor-pointer">
       <div className="space-y-3">
         {/* Image */}
@@ -64,4 +67,10 @@ export function StoryCard({
       </div>
     </article>
   )
+
+  if (href) {
+    return <Link href={href}>{content}</Link>
+  }
+
+  return content
 }

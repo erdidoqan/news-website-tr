@@ -7,212 +7,92 @@ import { Logo } from "./logo"
 import { NewsMegaMenu } from "./news-mega-menu"
 import { AnimatedHamburger } from "./animated-hamburger"
 import { useSiteContext } from "./site-provider"
+import type { MenuItem } from "@/types/site"
 
-const newsMenuData = {
-  topics: {
-    title: "Konular",
-    links: [
-      { label: "Türkiye Siyaseti", href: "/kategori/turkiye-siyaseti" },
-      { label: "Konut & Evsizlik", href: "/kategori/konut-evsizlik" },
-      { label: "Depremler", href: "/kategori/depremler" },
-      { label: "Eğitim", href: "/kategori/egitim" },
-      { label: "İstanbul", href: "/kategori/istanbul" },
-      { label: "Tüm Türkiye Haberleri", href: "/kategori/turkiye" },
-    ],
-  },
-  lifestyle: {
-    title: "Yaşam Tarzı",
-    links: [
-      { label: "Kültür Sanat", href: "/kategori/kultur-sanat" },
-      { label: "Türk Mutfağı", href: "/kategori/turk-mutfagi" },
-      { label: "Haber Merkezi Türkçe", href: "/kategori/haber-merkezi-turkce" },
-      { label: "Dijital Platform", href: "/kategori/dijital-platform" },
-    ],
-  },
-  voices: {
-    title: "Köşe Yazarları",
-    links: [
-      { label: "Ahmet Hakan", href: "/kategori/ahmet-hakan" },
-      { label: "Fatih Altaylı", href: "/kategori/fatih-altayli" },
-      { label: "Mehmet Barlas", href: "/kategori/mehmet-barlas" },
-      { label: "Nazlı Ilıcak", href: "/kategori/nazli-ilicak" },
-      { label: "Yılmaz Özdil", href: "/kategori/yilmaz-ozdil" },
-    ],
-  },
-  newsletters: {
-    title: "Bültenler",
-    links: [
-      { label: "Günün Özeti", href: "/kategori/gunun-ozeti" },
-      { label: "Bu Akşamın Önemli Haberleri", href: "/kategori/bu-aksamın-haberleri" },
-      { label: "Haber Merkezi Siyaset", href: "/kategori/haber-merkezi-siyaset" },
-      { label: "Ekonomi Bülteni", href: "/kategori/ekonomi-bulteni" },
-      { label: "Haber Uyarıları", href: "/kategori/haber-uyarilari" },
-    ],
-  },
-  more: {
-    title: "Daha Fazla",
-    links: [
-      { label: "Etkili İsimler", href: "/kategori/etkili-isimler" },
-      { label: "Haber Merkezi Bugün", href: "/kategori/haber-merkezi-bugun" },
-      { label: "Fotoğrafçılık", href: "/kategori/fotografcilik" },
-      { label: "Podcast'ler", href: "/kategori/podcastler" },
-      { label: "Video", href: "/kategori/video" },
-    ],
-  },
-}
 
-const economyMenuData = {
-  markets: {
-    title: "Piyasalar",
-    links: [
-      { label: "Borsa İstanbul", href: "/kategori/borsa-istanbul" },
-      { label: "Döviz Kurları", href: "/kategori/doviz-kurlari" },
-      { label: "Altın Fiyatları", href: "/kategori/altin-fiyatlari" },
-      { label: "Kripto Paralar", href: "/kategori/kripto-paralar" },
-      { label: "Emtia Piyasaları", href: "/kategori/emtia-piyasalari" },
-    ],
-  },
-  companies: {
-    title: "Şirketler",
-    links: [
-      { label: "Halka Açık Şirketler", href: "/kategori/halka-acik-sirketler" },
-      { label: "Şirket Haberleri", href: "/kategori/sirket-haberleri" },
-      { label: "Mali Tablolar", href: "/kategori/mali-tablolar" },
-      { label: "Yönetim Kurulu", href: "/kategori/yonetim-kurulu" },
-    ],
-  },
-  policies: {
-    title: "Ekonomi Politikaları",
-    links: [
-      { label: "Merkez Bankası", href: "/kategori/merkez-bankasi" },
-      { label: "Maliye Politikaları", href: "/kategori/maliye-politikalari" },
-      { label: "Vergi Düzenlemeleri", href: "/kategori/vergi-duzenlemeleri" },
-      { label: "Teşvik Paketleri", href: "/kategori/tesvik-paketleri" },
-      { label: "Ekonomik Göstergeler", href: "/kategori/ekonomik-gostergeler" },
-    ],
-  },
-  sectors: {
-    title: "Sektörler",
-    links: [
-      { label: "Bankacılık", href: "/kategori/bankacilik" },
-      { label: "Enerji", href: "/kategori/enerji" },
-      { label: "Turizm", href: "/kategori/turizm" },
-      { label: "İnşaat", href: "/kategori/insaat" },
-      { label: "Teknoloji", href: "/kategori/teknoloji-sektoru" },
-    ],
-  },
-  analysis: {
-    title: "Analizler",
-    links: [
-      { label: "Piyasa Analizleri", href: "/kategori/piyasa-analizleri" },
-      { label: "Ekonomist Görüşleri", href: "/kategori/ekonomist-gorusleri" },
-      { label: "Teknik Analiz", href: "/kategori/teknik-analiz" },
-      { label: "Sektör Raporları", href: "/kategori/sektor-raporlari" },
-      { label: "Yatırım Tavsiyeleri", href: "/kategori/yatirim-tavsiyeleri" },
-    ],
-  },
-}
-
-const navLinks = [
-  { href: "/kategori/teknoloji", label: "Teknoloji" },
-  { href: "/kategori/kultur", label: "Kültür" },
-  { href: "/kategori/yasam", label: "Yaşam" },
-]
 
 export function ModernHeader() {
   const { siteInfo, loading } = useSiteContext()
-  const [isNewsMenuOpen, setIsNewsMenuOpen] = React.useState(false)
-  const [isEconomyMenuOpen, setIsEconomyMenuOpen] = React.useState(false)
-  const [mobileNewsOpen, setMobileNewsOpen] = React.useState(false)
-  const [mobileEconomyOpen, setMobileEconomyOpen] = React.useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
-  const newsTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
-  const economyTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
 
-  // Generate menu data from site info
-  const generateMenuData = () => {
-    if (!siteInfo?.menus) return { newsMenuData, economyMenuData }
+  // Generate navigation items from site info
+  const getNavigationItems = () => {
+    if (!siteInfo?.menus?.header) return []
     
-    // Transform site menus to component format
-    const transformedMenus: any = {}
+    return siteInfo.menus.header
+      .filter(item => item.is_active)
+      .sort((a, b) => a.sort_order - b.sort_order)
+  }
+
+  // Generate mega menu data for a specific menu item
+  const generateMegaMenuData = (menuItem: MenuItem) => {
+    if (!menuItem.children) return {}
     
-    Object.entries(siteInfo.menus).forEach(([menuKey, menuItems]) => {
-      if (menuItems.length > 0) {
-        transformedMenus[menuKey] = {
-          title: menuKey.charAt(0).toUpperCase() + menuKey.slice(1),
-          links: menuItems.map(item => ({
-            label: item.label || item.name,
-            href: item.url || `/${item.name.toLowerCase().replace(/\s+/g, '-')}`
-          }))
-        }
+    const megaMenuData: Record<string, { title: string; links: { label: string; href: string }[] }> = {}
+    
+    menuItem.children.forEach((child, index) => {
+      const sectionKey = `section_${index}`
+      megaMenuData[sectionKey] = {
+        title: child.label || child.name,
+        links: child.children 
+          ? child.children
+              .filter((subItem) => subItem.is_active)
+              .sort((a, b) => a.sort_order - b.sort_order)
+              .map((subItem) => ({
+                label: subItem.label || subItem.name,
+                href: subItem.url || `/${subItem.name.toLowerCase().replace(/\s+/g, '-')}`
+              }))
+          : []
       }
     })
     
-    return {
-      newsMenuData: Object.keys(transformedMenus).length > 0 ? transformedMenus : newsMenuData,
-      economyMenuData
+    return megaMenuData
+  }
+
+  const navigationItems = getNavigationItems()
+  
+  // State for managing which mega menu is open
+  const [openMegaMenuId, setOpenMegaMenuId] = React.useState<number | null>(null)
+  const [mobileOpenMenuId, setMobileOpenMenuId] = React.useState<number | null>(null)
+  const megaMenuTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
+
+  const handleMegaMenuToggle = (menuId: number) => {
+    setOpenMegaMenuId((prev) => prev === menuId ? null : menuId)
+  }
+
+  const handleMegaMenuMouseEnter = (menuId: number) => {
+    if (megaMenuTimeoutRef.current) {
+      clearTimeout(megaMenuTimeoutRef.current)
+      megaMenuTimeoutRef.current = null
     }
+    setOpenMegaMenuId(menuId)
   }
 
-  const { newsMenuData: dynamicNewsMenuData, economyMenuData: dynamicEconomyMenuData } = generateMenuData()
-
-  const handleNewsMenuToggle = () => {
-    setIsNewsMenuOpen((prev) => !prev)
-    setIsEconomyMenuOpen(false)
-  }
-
-  const handleEconomyMenuToggle = () => {
-    setIsEconomyMenuOpen((prev) => !prev)
-    setIsNewsMenuOpen(false)
-  }
-
-  const handleNewsMouseEnter = () => {
-    if (newsTimeoutRef.current) {
-      clearTimeout(newsTimeoutRef.current)
-      newsTimeoutRef.current = null
-    }
-    setIsNewsMenuOpen(true)
-    setIsEconomyMenuOpen(false)
-  }
-
-  const handleNewsMouseLeave = () => {
-    newsTimeoutRef.current = setTimeout(() => {
-      setIsNewsMenuOpen(false)
+  const handleMegaMenuMouseLeave = () => {
+    megaMenuTimeoutRef.current = setTimeout(() => {
+      setOpenMegaMenuId(null)
     }, 200)
   }
 
-  const handleEconomyMouseEnter = () => {
-    if (economyTimeoutRef.current) {
-      clearTimeout(economyTimeoutRef.current)
-      economyTimeoutRef.current = null
-    }
-    setIsEconomyMenuOpen(true)
-    setIsNewsMenuOpen(false)
-  }
-
-  const handleEconomyMouseLeave = () => {
-    economyTimeoutRef.current = setTimeout(() => {
-      setIsEconomyMenuOpen(false)
-    }, 200)
+  const handleMobileMegaMenuToggle = (menuId: number) => {
+    setMobileOpenMenuId((prev) => prev === menuId ? null : menuId)
   }
 
   React.useEffect(() => {
     const handleScroll = () => {
-      if (isNewsMenuOpen || isEconomyMenuOpen) {
-        setIsNewsMenuOpen(false)
-        setIsEconomyMenuOpen(false)
+      if (openMegaMenuId !== null) {
+        setOpenMegaMenuId(null)
       }
     }
 
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element
-      if ((isNewsMenuOpen || isEconomyMenuOpen) && !target.closest("[data-mega-menu]")) {
-        setIsNewsMenuOpen(false)
-        setIsEconomyMenuOpen(false)
+      if (openMegaMenuId !== null && !target.closest("[data-mega-menu]")) {
+        setOpenMegaMenuId(null)
       }
     }
 
-    if (isNewsMenuOpen || isEconomyMenuOpen) {
+    if (openMegaMenuId !== null) {
       window.addEventListener("scroll", handleScroll)
       document.addEventListener("click", handleClickOutside)
     }
@@ -221,7 +101,7 @@ export function ModernHeader() {
       window.removeEventListener("scroll", handleScroll)
       document.removeEventListener("click", handleClickOutside)
     }
-  }, [isNewsMenuOpen, isEconomyMenuOpen])
+  }, [openMegaMenuId])
 
   return (
     <>
@@ -269,69 +149,62 @@ export function ModernHeader() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-x-8 h-full mx-auto">
-              <div
-                onMouseEnter={handleNewsMouseEnter}
-                onMouseLeave={handleNewsMouseLeave}
+              {navigationItems.map((item) => {
+                const isOpen = openMegaMenuId === item.id
+                const hasMegaMenu = item.type === 'mega' && item.children && item.children.length > 0
+
+                if (hasMegaMenu) {
+                  return (
+                    <div
+                      key={item.id}
+                      onMouseEnter={() => handleMegaMenuMouseEnter(item.id)}
+                      onMouseLeave={handleMegaMenuMouseLeave}
                 className="h-full flex items-center relative"
                 data-mega-menu
               >
                 <button
-                  onClick={handleNewsMenuToggle}
+                        onClick={() => handleMegaMenuToggle(item.id)}
                   className={`relative text-black text-sm font-medium h-full flex items-center hover:text-red-600 transition-colors ${
-                    isNewsMenuOpen ? "text-red-600" : ""
+                          isOpen ? "text-red-600" : ""
                   }`}
                 >
-                  Haberler
+                        {item.label}
                   <ChevronDown
-                    className={`ml-1 h-4 w-4 transition-transform duration-300 ${isNewsMenuOpen ? "rotate-180" : ""}`}
+                          className={`ml-1 h-4 w-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
                   />
                   <span
                     className={`absolute bottom-0 left-0 block h-px w-full bg-red-600 transition-transform duration-300 ease-out ${
-                      isNewsMenuOpen ? "scale-x-100" : "scale-x-0"
+                            isOpen ? "scale-x-100" : "scale-x-0"
                     }`}
                   />
                 </button>
               </div>
-
-              <div
-                onMouseEnter={handleEconomyMouseEnter}
-                onMouseLeave={handleEconomyMouseLeave}
-                className="h-full flex items-center relative"
-                data-mega-menu
-              >
-                <button
-                  onClick={handleEconomyMenuToggle}
-                  className={`relative text-black text-sm font-medium h-full flex items-center hover:text-red-600 transition-colors ${
-                    isEconomyMenuOpen ? "text-red-600" : ""
-                  }`}
-                >
-                  Ekonomi
-                  <ChevronDown
-                    className={`ml-1 h-4 w-4 transition-transform duration-300 ${isEconomyMenuOpen ? "rotate-180" : ""}`}
-                  />
-                  <span
-                    className={`absolute bottom-0 left-0 block h-px w-full bg-red-600 transition-transform duration-300 ease-out ${
-                      isEconomyMenuOpen ? "scale-x-100" : "scale-x-0"
-                    }`}
-                  />
-                </button>
-              </div>
-
-              {navLinks.map((link) => (
+                  )
+                } else {
+                  return (
                 <Link
-                  key={link.href}
-                  href={link.href}
+                      key={item.id}
+                      href={item.url || `/${item.name.toLowerCase().replace(/\s+/g, '-')}`}
+                      target={item.target}
                   className="group relative text-black text-sm font-medium h-full flex items-center hover:text-red-600 transition-colors"
                 >
-                  {link.label}
+                      {item.label}
                   <span className="absolute bottom-0 left-0 block h-px w-full bg-red-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
                 </Link>
-              ))}
+                  )
+                }
+              })}
             </nav>
 
             {/* Sağ İkonlar & Mobil Menü */}
             <div className="flex items-center gap-x-5">
               <div className="hidden md:flex items-center gap-x-5">
+                <Link
+                  href="/kategori"
+                  className="text-black text-sm font-medium hover:text-red-600 transition-colors"
+                >
+                  Kategoriler
+                </Link>
                 <Button variant="ghost" size="icon" className="text-black hover:bg-gray-100 hover:text-red-600">
                   <Search className="w-5 h-5" />
                 </Button>
@@ -355,18 +228,25 @@ export function ModernHeader() {
         {isMobileMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
             <div className="px-4 py-6 space-y-4 overflow-y-auto max-h-[32rem]">
-              {/* Haberler Section */}
-              <div className="border-b border-gray-100">
+              {navigationItems.map((item) => {
+                const isMobileOpen = mobileOpenMenuId === item.id
+                const hasMegaMenu = item.type === 'mega' && item.children && item.children.length > 0
+
+                if (hasMegaMenu) {
+                  const megaMenuData = generateMegaMenuData(item)
+                  
+                  return (
+                    <div key={item.id} className="border-b border-gray-100">
                 <button
-                  onClick={() => setMobileNewsOpen(!mobileNewsOpen)}
+                        onClick={() => handleMobileMegaMenuToggle(item.id)}
                   className="w-full flex items-center justify-between text-lg font-semibold hover:text-red-600 transition-colors py-4"
                 >
-                  Haberler
-                  <ChevronDown className={`w-5 h-5 transition-transform ${mobileNewsOpen ? "rotate-180" : ""}`} />
+                        {item.label}
+                        <ChevronDown className={`w-5 h-5 transition-transform ${isMobileOpen ? "rotate-180" : ""}`} />
                 </button>
-                {mobileNewsOpen && (
+                      {isMobileOpen && (
                   <div className="pb-6 space-y-6 pl-4">
-                    {Object.entries(dynamicNewsMenuData).map(([key, section]) => (
+                          {Object.entries(megaMenuData).map(([key, section]) => (
                       <div key={key}>
                         <h4 className="font-semibold text-base text-gray-900 mb-3">{section.title}</h4>
                         <div className="space-y-3">
@@ -386,53 +266,32 @@ export function ModernHeader() {
                   </div>
                 )}
               </div>
-
-              {/* Ekonomi Section */}
-              <div className="border-b border-gray-100">
-                <button
-                  onClick={() => setMobileEconomyOpen(!mobileEconomyOpen)}
-                  className="w-full flex items-center justify-between text-lg font-semibold hover:text-red-600 transition-colors py-4"
-                >
-                  Ekonomi
-                  <ChevronDown className={`w-5 h-5 transition-transform ${mobileEconomyOpen ? "rotate-180" : ""}`} />
-                </button>
-                {mobileEconomyOpen && (
-                  <div className="pb-6 space-y-6 pl-4">
-                    {Object.entries(dynamicEconomyMenuData).map(([key, section]) => (
-                      <div key={key}>
-                        <h4 className="font-semibold text-base text-gray-900 mb-3">{section.title}</h4>
-                        <div className="space-y-3">
-                          {section.links.map((link) => (
-                            <Link
-                              key={link.href}
-                              href={link.href}
-                              className="block text-base text-gray-600 hover:text-red-600 transition-colors py-2"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                              {link.label}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Other Navigation Links */}
-              <div className="space-y-0">
-                {navLinks.map((link) => (
-                  <div key={link.href} className="border-b border-gray-100">
+                  )
+                } else {
+                  return (
+                    <div key={item.id} className="border-b border-gray-100">
                     <Link
-                      href={link.href}
+                        href={item.url || `/${item.name.toLowerCase().replace(/\s+/g, '-')}`}
+                        target={item.target}
                       className="block text-lg font-semibold hover:text-red-600 transition-colors py-4"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      {link.label}
-                      <ChevronDown className="w-5 h-5 float-right mt-0.5" />
+                        {item.label}
                     </Link>
                   </div>
-                ))}
+                  )
+                }
+              })}
+              
+              {/* Kategoriler Link for Mobile */}
+              <div className="border-b border-gray-100">
+                <Link
+                  href="/kategori"
+                  className="block text-lg font-semibold hover:text-red-600 transition-colors py-4"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Tüm Kategoriler
+                </Link>
               </div>
             </div>
           </div>
@@ -440,20 +299,18 @@ export function ModernHeader() {
 
         {/* Desktop Mega Menu */}
         <div data-mega-menu className="absolute top-full left-0 right-0 z-40">
+          {navigationItems
+            .filter(item => item.type === 'mega' && item.children && item.children.length > 0)
+            .map((item) => (
           <NewsMegaMenu
-            isOpen={isNewsMenuOpen}
-            setIsOpen={setIsNewsMenuOpen}
-            onMouseEnter={handleNewsMouseEnter}
-            onMouseLeave={handleNewsMouseLeave}
-            megaMenuData={dynamicNewsMenuData}
-          />
-          <NewsMegaMenu
-            isOpen={isEconomyMenuOpen}
-            setIsOpen={setIsEconomyMenuOpen}
-            onMouseEnter={handleEconomyMouseEnter}
-            onMouseLeave={handleEconomyMouseLeave}
-            megaMenuData={dynamicEconomyMenuData}
-          />
+                key={item.id}
+                isOpen={openMegaMenuId === item.id}
+                setIsOpen={() => setOpenMegaMenuId(null)}
+                onMouseEnter={() => handleMegaMenuMouseEnter(item.id)}
+                onMouseLeave={handleMegaMenuMouseLeave}
+                megaMenuData={generateMegaMenuData(item)}
+              />
+            ))}
         </div>
       </header>
     </>

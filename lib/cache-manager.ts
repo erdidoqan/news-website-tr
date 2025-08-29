@@ -27,7 +27,7 @@ export class CacheManager {
   private getCacheTTL(type: CacheType): number {
     switch (type) {
       case 'site':
-        return Number(process.env.SITE_CACHE_TTL) * 1000 || 30 * 24 * 60 * 60 * 1000 // 30 days
+        return Number(process.env.SITE_CACHE_TTL) * 1000 || 7 * 24 * 60 * 60 * 1000 // 7 days (site bilgileri nadiren değişir)
       case 'news':
         return Number(process.env.NEWS_CACHE_TTL) * 1000 || 5 * 60 * 1000 // 5 minutes
       case 'default':

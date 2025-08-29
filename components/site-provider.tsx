@@ -17,9 +17,16 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
   const [siteInfo, setSiteInfo] = useState<SiteInfo | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [initialized, setInitialized] = useState(false)
 
   const fetchSiteInfo = async (forceRefresh = false) => {
     try {
+      // If already initialized and not forcing refresh, don't fetch again
+      if (initialized && !forceRefresh && siteInfo) {
+        setLoading(false)
+        return
+      }
+
       setLoading(true)
       setError(null)
       
@@ -27,6 +34,7 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
       
       if (response.success && response.data) {
         setSiteInfo(response.data)
+        setInitialized(true)
       } else {
         setError(response.error || 'Site bilgileri alınamadı')
       }
@@ -42,7 +50,27 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    fetchSiteInfo()
+    // Check if we have cached data first
+    const checkCacheAndFetch = async () => {
+      try {
+        // Try to get cached data immediately
+        const cachedResponse = await siteApi.getSiteInfo(false)
+        if (cachedResponse.success && cachedResponse.data) {
+          setSiteInfo(cachedResponse.data)
+          setInitialized(true)
+          setLoading(false)
+          return
+        }
+        
+        // If no cache, fetch from API
+        await fetchSiteInfo()
+      } catch (err) {
+        console.error('Error during initial site info load:', err)
+        await fetchSiteInfo()
+      }
+    }
+
+    checkCacheAndFetch()
   }, [])
 
   return (

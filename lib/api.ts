@@ -28,14 +28,10 @@ class ApiService {
     }
 
     try {
-      // API key'i headers'a ekle
-      const apiKey = process.env.API_KEY
-      const authHeaders = apiKey ? { 'Authorization': `Bearer ${apiKey}` } : {}
-
+      // Internal API endpoints (no authentication required)
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         headers: {
           "Content-Type": "application/json",
-          ...authHeaders,
           ...options?.headers,
         },
         ...options,

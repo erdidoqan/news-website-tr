@@ -146,7 +146,7 @@ export function HomepageNewsList({
               {/* Category Badge */}
               <div className="absolute top-4 left-4">
                 <Badge 
-                  style={{ backgroundColor: featuredArticle.category.color }}
+                  style={{ backgroundColor: featuredArticle.category?.color || '#6366F1' }}
                   className="text-white text-xs font-medium"
                 >
                   {featuredArticle.category.name}
@@ -229,7 +229,7 @@ export function HomepageNewsList({
                 {/* Category Badge */}
                 <div className="absolute top-3 left-3">
                   <Badge 
-                    style={{ backgroundColor: article.category.color }}
+                    style={{ backgroundColor: article.category?.color || '#6366F1' }}
                     className="text-white text-xs font-medium"
                   >
                     {article.category.name}

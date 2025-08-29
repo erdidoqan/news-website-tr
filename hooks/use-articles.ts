@@ -54,8 +54,17 @@ export function useArticles(initialOptions: UseArticlesOptions = {}): UseArticle
     try {
       const params = new URLSearchParams()
       
-      // Merge initial options with provided options
-      const finalOptions = { ...initialOptions, ...options }
+      // Use provided options or fallback to individual initial values
+      const finalOptions = {
+        page: options.page || page,
+        perPage: options.perPage || perPage,
+        status: options.status || status,
+        category: options.category || category,
+        tag: options.tag || tag,
+        search: options.search || search,
+        sortBy: options.sortBy || sortBy,
+        sortOrder: options.sortOrder || sortOrder,
+      }
       
       if (finalOptions.page) params.append('page', finalOptions.page.toString())
       if (finalOptions.perPage) params.append('per_page', finalOptions.perPage.toString())
@@ -71,7 +80,7 @@ export function useArticles(initialOptions: UseArticlesOptions = {}): UseArticle
           'Content-Type': 'application/json',
         },
         // Client-side cache for 2 minutes
-        next: { revalidate: 120 }
+        cache: 'force-cache'
       })
 
       if (!response.ok) {
@@ -90,7 +99,7 @@ export function useArticles(initialOptions: UseArticlesOptions = {}): UseArticle
     } finally {
       setLoading(false)
     }
-  }, [initialOptions])
+  }, [page, perPage, status, category, tag, search, sortBy, sortOrder])
 
   const refresh = useCallback(async () => {
     await fetchArticles()
@@ -100,7 +109,8 @@ export function useArticles(initialOptions: UseArticlesOptions = {}): UseArticle
     if (autoFetch) {
       fetchArticles()
     }
-  }, [fetchArticles, autoFetch])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return {
     articles,

@@ -1,4 +1,8 @@
 import { downloadFavicons } from './scripts/download-favicons.js'
+import dotenv from 'dotenv'
+
+// Environment variables'ları açıkça yükle
+dotenv.config()
 
 // Build sırasında sadece bir kez çalıştırmak için global flag
 let faviconDownloaded = false
@@ -7,6 +11,12 @@ let faviconDownloaded = false
 if (process.env.NODE_ENV !== 'production') {
   process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'
 }
+
+// Environment variables'ları build zamanında logla
+console.log('🔧 Build-time environment check:')
+console.log('  - NEXT_PUBLIC_BASE_API_URL:', process.env.NEXT_PUBLIC_BASE_API_URL ? '✅ Set' : '❌ Missing')
+console.log('  - API_KEY:', process.env.API_KEY ? '✅ Set' : '❌ Missing')
+console.log('  - NODE_ENV:', process.env.NODE_ENV)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -19,6 +29,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Build başlangıcında favicon'ları indir (sadece ilk build'de)
     if (!dev && isServer && !faviconDownloaded) {

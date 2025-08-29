@@ -45,6 +45,7 @@ export function NewsListing({ articles, loading }: NewsListingProps) {
           category={article.category}
           publishedAt={article.publishedAt}
           size="medium"
+          href={`/${article.slug}`}
         />
       ))}
     </div>

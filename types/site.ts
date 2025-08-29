@@ -47,6 +47,7 @@ export interface MenuItem {
   description: string | null
   css_classes: string | null
   is_active: boolean
+  children?: MenuItem[]
 }
 
 export interface Menus {
@@ -91,7 +92,7 @@ export interface SiteInfo {
   updated_at: string
   logo: Logo
   favicons: Favicon[]
-  theme: Theme
+  theme: Theme | null
   social_media: SocialMedia
   menus: Menus
   settings: SiteSettings

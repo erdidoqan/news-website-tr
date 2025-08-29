@@ -67,11 +67,26 @@ async function downloadFavicons() {
     
     // Site endpoint'ine istek at
     const siteUrl = `${API_BASE_URL}/site`
+    const apiKey = process.env.API_KEY
+    
+    console.log('🔍 Favicon Download Environment Check:')
+    console.log('  - API_BASE_URL:', API_BASE_URL ? '✅ Set' : '❌ Missing')
+    console.log('  - API_KEY:', apiKey ? '✅ Set' : '❌ Missing')
+    
+    if (!apiKey) {
+      console.warn('⚠️ API_KEY missing for favicon download, using fallback')
+      return
+    }
     
     // Node.js'de fetch yoksa alternatif kullan
     let siteData
     try {
-      const response = await fetch(siteUrl)
+      const response = await fetch(siteUrl, {
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        }
+      })
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${siteUrl}`)
       }
@@ -80,8 +95,20 @@ async function downloadFavicons() {
       // Fetch yoksa https modülü kullan
       siteData = await new Promise((resolve, reject) => {
         const client = siteUrl.startsWith('https') ? https : http
+        const url = new URL(siteUrl)
         
-        client.get(siteUrl, (response) => {
+        const options = {
+          hostname: url.hostname,
+          port: url.port,
+          path: url.pathname,
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          }
+        }
+        
+        client.request(options, (response) => {
           let data = ''
           
           response.on('data', (chunk) => {
@@ -95,7 +122,7 @@ async function downloadFavicons() {
               reject(parseError)
             }
           })
-        }).on('error', reject)
+        }).on('error', reject).end()
       })
     }
     
