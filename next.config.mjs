@@ -27,7 +27,25 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'app.bibulten.com',
+        port: '',
+        pathname: '/img/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.icerikplanla.com',
+        port: '',
+        pathname: '/**',
+      }
+    ],
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60 * 60 * 24 * 7, // 1 week
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {

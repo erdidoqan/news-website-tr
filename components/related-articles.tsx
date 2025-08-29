@@ -1,6 +1,6 @@
 import Link from "next/link"
-import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
+import { OptimizedImage } from "@/components/optimized-image"
 
 interface RelatedArticle {
   id: string
@@ -65,11 +65,11 @@ export function RelatedArticles({ category, currentSlug }: RelatedArticlesProps)
             className="group block bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
           >
             <div className="aspect-video relative overflow-hidden">
-              <Image
+              <OptimizedImage
                 src={article.imageUrl || "/placeholder.svg"}
                 alt={article.title}
+                preset="thumbnail"
                 fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
               />
             </div>
 

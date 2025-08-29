@@ -1,6 +1,6 @@
-import Image from "next/image"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
+import { OptimizedImage } from "@/components/optimized-image"
 
 interface StoryCardProps {
   title: string
@@ -40,12 +40,13 @@ export function StoryCard({
       <div className="space-y-3">
         {/* Image */}
         <div className="relative overflow-hidden rounded-lg">
-          <Image
+          <OptimizedImage
             src={imageUrl || "/placeholder.svg"}
             alt={imageAlt}
-            width={400}
-            height={300}
-            className={`w-full ${sizeClasses[size]} object-cover transition-transform duration-300 group-hover:scale-105`}
+            preset="card"
+            options={{
+              className: `w-full ${sizeClasses[size]} object-cover transition-transform duration-300 group-hover:scale-105`
+            }}
           />
           <div className="absolute top-3 left-3">
             <Badge variant="secondary" className="text-xs font-medium bg-white/90 text-gray-800">

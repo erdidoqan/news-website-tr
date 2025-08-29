@@ -3,10 +3,10 @@
 import { useArticles } from '@/hooks/use-articles'
 import { LoadingSpinner } from '@/components/loading-spinner'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Calendar, User, Tag, ArrowRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+import { OptimizedImage, HeroImage } from '@/components/optimized-image'
 
 interface HomepageNewsListProps {
   categorySlug?: string
@@ -127,13 +127,11 @@ export function HomepageNewsList({
             {/* Image */}
             <div className="relative aspect-[16/10] md:aspect-square">
               {featuredArticle.featured_media?.url ? (
-                <Image
+                <OptimizedImage
                   src={featuredArticle.featured_media.url}
                   alt={featuredArticle.title}
+                  preset="hero"
                   fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
                 />
               ) : (
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -211,12 +209,11 @@ export function HomepageNewsList({
               {/* Image */}
               <div className="relative aspect-[16/10]">
                 {article.featured_media?.url ? (
-                  <Image
+                  <OptimizedImage
                     src={article.featured_media.url}
                     alt={article.title}
+                    preset="card"
                     fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-200 flex items-center justify-center">
