@@ -149,7 +149,7 @@ export function HomepageNewsList({
                   style={{ backgroundColor: featuredArticle.category?.color || '#6366F1' }}
                   className="text-white text-xs font-medium"
                 >
-                  {featuredArticle.category.name}
+                  {featuredArticle.category?.name || 'Genel'}
                 </Badge>
               </div>
             </div>
@@ -232,7 +232,7 @@ export function HomepageNewsList({
                     style={{ backgroundColor: article.category?.color || '#6366F1' }}
                     className="text-white text-xs font-medium"
                   >
-                    {article.category.name}
+                    {article.category?.name || 'Genel'}
                   </Badge>
                 </div>
               </div>

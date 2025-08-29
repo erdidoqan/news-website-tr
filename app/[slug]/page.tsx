@@ -95,7 +95,7 @@ async function getArticleBySlug(slug: string) {
       excerpt: articleData.excerpt,
       content: articleData.content,
       imageUrl: articleData.featured_media?.url || "/placeholder.jpg",
-      category: articleData.category.name,
+      category: articleData.category?.name || "Genel",
       publishedAt: articleData.published_at,
       author: {
         name: `${articleData.author.first_name} ${articleData.author.last_name}`,
