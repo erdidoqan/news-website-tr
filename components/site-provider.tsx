@@ -54,6 +54,28 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
     // Check if we have cached data first
     const checkCacheAndFetch = async () => {
       try {
+        // Check for cache clear flag (created during build)
+        const checkCacheClearFlag = async () => {
+          try {
+            const response = await fetch('/.cache-clear-flag')
+            if (response.ok) {
+              const buildTimestamp = await response.text()
+              const lastClearTime = localStorage.getItem('last-cache-clear')
+              
+              if (!lastClearTime || buildTimestamp !== lastClearTime) {
+                console.log('🧹 Build cache clear flag detected, clearing local storage')
+                localStorage.clear()
+                sessionStorage.clear()
+                localStorage.setItem('last-cache-clear', buildTimestamp)
+              }
+            }
+          } catch (error) {
+            // Flag dosyası yoksa veya hata varsa, devam et
+          }
+        }
+
+        await checkCacheClearFlag()
+        
         // Try to get cached data immediately
         const cachedResponse = await siteApi.getSiteInfo(false)
         if (cachedResponse.success && cachedResponse.data) {

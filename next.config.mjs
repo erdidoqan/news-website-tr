@@ -1,6 +1,12 @@
 import { downloadFavicons } from './scripts/download-favicons.js'
 import { downloadLogo } from './scripts/download-logo.js'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import dotenv from 'dotenv'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Environment variables'ları açıkça yükle
 dotenv.config()
@@ -8,6 +14,55 @@ dotenv.config()
 // Build sırasında sadece bir kez çalıştırmak için global flag
 let faviconDownloaded = false
 let logoDownloaded = false
+let cacheCleared = false
+
+// Cache temizleme fonksiyonu
+function clearBuildCaches() {
+  try {
+    console.log('🧹 Cache temizleme başlatılıyor...')
+    
+    // Browser localStorage cache'ini temizlemek için flag dosyası oluştur
+    const flagPath = path.join(__dirname, 'public', '.cache-clear-flag')
+    fs.writeFileSync(flagPath, Date.now().toString())
+    
+    // .next cache klasörünü temizle
+    const nextCachePath = path.join(__dirname, '.next', 'cache')
+    if (fs.existsSync(nextCachePath)) {
+      fs.rmSync(nextCachePath, { recursive: true, force: true })
+      console.log('🗑️ .next/cache temizlendi')
+    }
+    
+    // Eski favicon'ları temizle (yenileri indirilecek)
+    const faviconDir = path.join(__dirname, 'public', 'favicons')
+    if (fs.existsSync(faviconDir)) {
+      const files = fs.readdirSync(faviconDir)
+      files.forEach(file => {
+        if (file.match(/\d{10,}/) && !file.includes('manifest.json')) {
+          const filePath = path.join(faviconDir, file)
+          fs.unlinkSync(filePath)
+          console.log('🗑️ Eski favicon temizlendi:', file)
+        }
+      })
+    }
+    
+    // Eski logo'ları temizle (yenisi indirilecek)
+    const logoDir = path.join(__dirname, 'public', 'logos')
+    if (fs.existsSync(logoDir)) {
+      const files = fs.readdirSync(logoDir)
+      files.forEach(file => {
+        if (file.startsWith('logo-') && file.match(/\d{10,}/)) {
+          const filePath = path.join(logoDir, file)
+          fs.unlinkSync(filePath)
+          console.log('🗑️ Eski logo temizlendi:', file)
+        }
+      })
+    }
+    
+    console.log('✅ Cache temizleme tamamlandı')
+  } catch (error) {
+    console.warn('⚠️ Cache temizleme hatası:', error.message)
+  }
+}
 
 // SSL sertifika doğrulamasını geliştirme ortamında devre dışı bırak
 if (process.env.NODE_ENV !== 'production') {
@@ -53,6 +108,12 @@ const nextConfig = {
   },
 
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Cache temizleme (build başlangıcında, sadece bir kez)
+    if (!dev && isServer && !cacheCleared) {
+      cacheCleared = true
+      clearBuildCaches()
+    }
+
     // Build başlangıcında favicon'ları ve logo'yu indir (sadece ilk build'de)
     if (!dev && isServer && !faviconDownloaded) {
       faviconDownloaded = true
