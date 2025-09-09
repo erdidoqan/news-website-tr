@@ -1,30 +1,46 @@
+"use client"
+
 import { AlertCircle, ChevronRight } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-
-const breakingNewsItems = [
-  {
-    title: "Son Dakika: Ankara'da önemli ekonomi toplantısı başladı",
-    time: "5 dk önce",
-    urgent: true,
-  },
-  {
-    title: "İstanbul Borsası rekor seviyeye ulaştı, uzmanlar değerlendiriyor",
-    time: "12 dk önce",
-    urgent: false,
-  },
-  {
-    title: "Teknoloji sektöründe büyük birleşme açıklandı",
-    time: "18 dk önce",
-    urgent: false,
-  },
-  {
-    title: "Spor: Milli takım kadrosu açıklandı, sürpriz isimler var",
-    time: "25 dk önce",
-    urgent: false,
-  },
-]
+import { useArticles } from "@/hooks/use-articles"
+import Link from "next/link"
 
 export function BreakingNews() {
+  const { articles, loading } = useArticles({
+    perPage: 6,
+    autoFetch: true,
+    sortBy: 'published_at',
+    sortOrder: 'desc'
+  })
+
+  // Loading veya haber yoksa gösterme
+  if (loading || articles.length === 0) {
+    return null
+  }
+
+  // Time ago hesaplama
+  const getTimeAgo = (dateString: string | null) => {
+    if (!dateString) return 'Tarih yok'
+    
+    const now = new Date()
+    const publishDate = new Date(dateString)
+    const diffMs = now.getTime() - publishDate.getTime()
+    const diffMins = Math.floor(diffMs / (1000 * 60))
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+    
+    if (diffMins < 60) return `${diffMins} dk önce`
+    if (diffHours < 24) return `${diffHours} saat önce`
+    return `${diffDays} gün önce`
+  }
+
+  // Son 6 haberi breaking news olarak göster
+  const breakingNewsItems = articles.slice(0, 6).map((article, index) => ({
+    title: article.title,
+    slug: article.slug,
+    time: getTimeAgo(article.published_at),
+    urgent: index === 0 // İlk haber "acil" olarak işaretle
+  }))
   return (
     <section className="bg-red-600 text-white py-3 sm:py-4 mb-6 sm:mb-8">
       <div className="max-w-7xl mx-auto px-4">
@@ -38,7 +54,7 @@ export function BreakingNews() {
           <div className="flex-1 overflow-hidden">
             <div className="flex items-center gap-4 sm:gap-8 animate-scroll">
               {breakingNewsItems.map((item, index) => (
-                <div key={index} className="flex items-center gap-2 sm:gap-3 whitespace-nowrap">
+                <Link key={index} href={`/${item.slug}`} className="flex items-center gap-2 sm:gap-3 whitespace-nowrap hover:text-red-100 transition-colors">
                   {item.urgent && (
                     <Badge variant="secondary" className="bg-yellow-400 text-red-600 text-xs hidden sm:inline-flex">
                       ACIL
@@ -47,7 +63,7 @@ export function BreakingNews() {
                   <span className="font-medium text-sm sm:text-base">{item.title}</span>
                   <span className="text-red-200 text-xs sm:text-sm hidden sm:inline">({item.time})</span>
                   {index < breakingNewsItems.length - 1 && <div className="w-1 h-1 bg-red-300 rounded-full"></div>}
-                </div>
+                </Link>
               ))}
             </div>
           </div>

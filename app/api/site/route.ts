@@ -54,23 +54,7 @@ const mockSiteData: SiteInfo = {
       filename: "apple-touch-icon-1753915306.png"
     }
   ],
-  theme: {
-    id: 1,
-    name: "BBC News",
-    slug: "bbc-news",
-    description: "BBC benzeri profesyonel haber sitesi teması",
-    preview_image: "https://habermodul.test/img/media/1/2025/07/24/b3fec24d-f875-4d62-8fc6-98ce35e60c97.png",
-    color_palette: {
-      primary: "#CC0000",
-      secondary: "#767676"
-    },
-    features: [
-      "Responsive Tasarım",
-      "Haber Kategorileri",
-      "Canlı Yayın Desteği",
-      "Temiz Tipografi"
-    ]
-  },
+  theme: null,
   social_media: {
     facebook: "https://facebook.com/habermerkezi",
     twitter: "https://twitter.com/habermerkezi",

@@ -1,7 +1,8 @@
 'use client'
 
 import { useSiteContext } from './site-provider'
-import Image from 'next/image'
+import { getLogoSrc, isLogoAvailable } from '@/lib/logo-utils'
+import { OptimizedImage } from '@/components/optimized-image'
 
 interface LogoProps {
   className?: string
@@ -10,24 +11,33 @@ interface LogoProps {
 export function Logo({ className }: LogoProps) {
   const { siteInfo } = useSiteContext()
   
-  // Use site logo if available, otherwise fallback to text
-  if (siteInfo?.logo?.url) {
+  // Önce local logo'yu kontrol et, sonra API'den gelen logo'yu, son olarak fallback
+  const logoSrc = isLogoAvailable() ? getLogoSrc() : (siteInfo?.logo?.url || '/placeholder-logo.svg')
+  
+  // API'den gelen site adını kullan
+  const siteName = siteInfo?.name || 'Haber Merkezi'
+  
+  // Eğer logo varsa göster
+  if (logoSrc !== '/placeholder-logo.svg' || siteInfo?.logo?.url) {
     return (
       <div className={className}>
-        <Image
-          src={siteInfo.logo.url}
-          alt={siteInfo.name || 'Site Logo'}
-          width={120}
-          height={40}
-          className="h-full w-auto object-contain"
+        <OptimizedImage
+          src={logoSrc}
+          alt={`${siteName} Logo`}
+          options={{
+            width: 120,
+            height: 40,
+            quality: 90,
+            priority: true,
+            fetchPriority: 'high',
+            className: "h-full w-auto object-contain"
+          }}
         />
       </div>
     )
   }
 
-  // Fallback to site name or default text
-  const siteName = siteInfo?.name || 'Haber Merkezi'
-  
+  // Fallback: Site name as text logo
   return (
     <div className={className}>
       <h1 className="font-serif text-2xl font-bold text-gray-900 tracking-tight">

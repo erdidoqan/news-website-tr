@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import type { SiteInfo } from '@/types/site'
 import { siteApi } from '@/lib/site-api'
+import { DynamicThemeProvider } from './dynamic-theme-provider'
 
 interface SiteContextType {
   siteInfo: SiteInfo | null
@@ -82,7 +83,9 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
         refetch,
       }}
     >
-      {children}
+      <DynamicThemeProvider>
+        {children}
+      </DynamicThemeProvider>
     </SiteContext.Provider>
   )
 }

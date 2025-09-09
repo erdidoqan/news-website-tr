@@ -4,6 +4,13 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Dynamic theme colors - will be set by JavaScript */
+  --color-primary: #dc2626; /* fallback red-600 */
+  --color-secondary: #6b7280; /* fallback gray-500 */
+  --color-primary-rgb: 220, 38, 38;
+  --color-secondary-rgb: 107, 114, 128;
+  
+  /* Shadcn/ui colors */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -167,5 +174,91 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
+  }
+
+  /* Dynamic theme utilities */
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  
+  .bg-secondary {
+    background-color: var(--color-secondary);
+  }
+  
+  .text-primary {
+    color: var(--color-primary);
+  }
+  
+  .text-secondary {
+    color: var(--color-secondary);
+  }
+  
+  .border-primary {
+    border-color: var(--color-primary);
+  }
+  
+  .border-secondary {
+    border-color: var(--color-secondary);
+  }
+  
+  .bg-primary-rgb {
+    background-color: rgb(var(--color-primary-rgb));
+  }
+  
+  .bg-primary-10 {
+    background-color: rgba(var(--color-primary-rgb), 0.1);
+  }
+  
+  .bg-primary-20 {
+    background-color: rgba(var(--color-primary-rgb), 0.2);
+  }
+  
+  .hover\:text-primary:hover {
+    color: var(--color-primary);
+  }
+  
+  .hover\:bg-primary:hover {
+    background-color: var(--color-primary);
+  }
+
+  /* Article content styling */
+  .article-content {
+    /* İçerik içindeki span'lar için stil */
+  }
+  
+  .article-content span {
+    line-height: 1.8;
+    color: rgb(55, 65, 81); /* gray-700 */
+  }
+  
+  .article-content p span {
+    display: inline;
+    background-color: transparent !important;
+    color: inherit !important;
+    font-size: inherit;
+    line-height: inherit;
+  }
+  
+  .article-content strong {
+    font-weight: 600;
+    color: rgb(17, 24, 39); /* gray-900 */
+  }
+  
+  /* API'den gelen inline style'ları override et */
+  .article-content * {
+    background-color: transparent !important;
+    color: inherit !important;
+  }
+  
+  .article-content p {
+    color: rgb(55, 65, 81) !important; /* gray-700 */
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    font-size: 18px;
+  }
+  
+  .article-content strong {
+    color: rgb(17, 24, 39) !important; /* gray-900 */
+    font-weight: 600;
   }
 }

@@ -45,31 +45,32 @@ export function generateResponsiveSrcSet(
     return originalUrl
   }
 
-  const sizes = [1, 1.5, 2, 3] // 1x, 1.5x, 2x, 3x
+  // More conservative multipliers to reduce file sizes
+  const sizes = [1, 1.5, 2] // 1x, 1.5x, 2x (removed 3x to save bandwidth)
   
   const srcSetEntries = sizes.map(multiplier => {
     const width = Math.round(baseWidth * multiplier)
     const optimizedUrl = getOptimizedImageUrl(originalUrl, { 
       width, 
-      quality: 85, 
+      quality: 80, // Reduced from 85 to 80 for better compression
       format: 'webp' 
     })
-    return `${optimizedUrl} ${multiplier}x`
+    return `${optimizedUrl} ${width}w`
   })
 
   return srcSetEntries.join(', ')
 }
 
-// Generate sizes attribute for responsive images
+// Generate sizes attribute for responsive images - daha conservative
 export function generateImageSizes(breakpoints?: {
   mobile?: number
   tablet?: number
   desktop?: number
 }): string {
   const {
-    mobile = 100,
-    tablet = 50,
-    desktop = 33
+    mobile = 90, // 100'den 90'a düşürüldü
+    tablet = 45, // 50'den 45'e düşürüldü
+    desktop = 30 // 33'den 30'a düşürüldü
   } = breakpoints || {}
 
   return `(max-width: 768px) ${mobile}vw, (max-width: 1024px) ${tablet}vw, ${desktop}vw`
@@ -83,15 +84,17 @@ export function getNextImageProps(
     priority?: boolean
     className?: string
     sizes?: string
+    fetchPriority?: 'high' | 'low' | 'auto'
   } = {}
 ) {
   const {
-    width = 400,
-    height = 300,
-    quality = 85,
+    width = 320, // 400'den 320'ye düşürüldü
+    height = 200, // 300'den 200'e düşürüldü
+    quality = 75, // 85'den 75'e düşürüldü
     priority = false,
     className = "",
     sizes = generateImageSizes(),
+    fetchPriority = priority ? 'high' : 'auto',
     ...glideOptions
   } = options
 
@@ -104,76 +107,94 @@ export function getNextImageProps(
     ...glideOptions 
   })
 
-  return {
+  const baseProps = {
     src,
     alt,
-    width,
-    height,
     quality,
     priority,
     className,
     sizes,
     placeholder: 'blur' as const,
     blurDataURL: getOptimizedImageUrl(originalUrl, { 
-      width: 10, 
-      height: 10, 
-      quality: 10,
+      width: 8, // 10'dan 8'e düşürüldü
+      height: 8, 
+      quality: 5, // 10'dan 5'e düşürüldü
       format: 'webp'
     }),
   }
+
+  // Add fetchPriority for modern browsers
+  const imageProps: any = {
+    ...baseProps,
+    fetchPriority,
+  }
+
+  // Add width/height only if not using fill
+  if (width && height) {
+    imageProps.width = width
+    imageProps.height = height
+  }
+
+  return imageProps
 }
 
 // Preset configurations for different use cases
 export const imagePresets = {
-  // Ana sayfa featured image
+  // Ana sayfa featured image - daha küçük boyutlar
   hero: {
-    width: 800,
-    height: 450,
-    quality: 90,
+    width: 600, // 800'den 600'e düşürüldü
+    height: 338, // 16:9 aspect ratio
+    quality: 80, // 90'dan 80'e düşürüldü
     priority: true,
-    sizes: "(max-width: 768px) 100vw, (max-width: 1024px) 80vw, 800px"
+    fetchPriority: 'high' as const,
+    sizes: "(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 600px"
   },
   
-  // Kategori listesi thumbnail
+  // Kategori listesi thumbnail - çok daha küçük
   thumbnail: {
-    width: 300,
-    height: 200,
-    quality: 80,
-    sizes: "(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 300px"
+    width: 240, // 300'den 240'a düşürüldü
+    height: 160,
+    quality: 75, // 80'den 75'e düşürüldü
+    fetchPriority: 'low' as const,
+    sizes: "(max-width: 768px) 40vw, (max-width: 1024px) 25vw, 240px"
   },
   
-  // Haber kartı resmi
+  // Haber kartı resmi - optimize edildi
   card: {
-    width: 400,
-    height: 250,
-    quality: 85,
-    sizes: "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+    width: 320, // 400'den 320'ye düşürüldü
+    height: 200, // 250'den 200'e düşürüldü
+    quality: 75, // 85'den 75'e düşürüldü
+    fetchPriority: 'auto' as const,
+    sizes: "(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 320px"
   },
   
-  // Haber detay sayfası ana resim
+  // Haber detay sayfası ana resim - mobile için optimize
   article: {
-    width: 1200,
-    height: 630,
-    quality: 90,
+    width: 800, // 1200'den 800'e düşürüldü
+    height: 450,
+    quality: 85, // 90'dan 85'e düşürüldü
     priority: true,
-    sizes: "(max-width: 768px) 100vw, 1200px"
+    fetchPriority: 'high' as const,
+    sizes: "(max-width: 768px) 100vw, 800px"
   },
   
   // Avatar/profil resmi
   avatar: {
-    width: 64,
-    height: 64,
-    quality: 90,
+    width: 48, // 64'den 48'e düşürüldü
+    height: 48,
+    quality: 80, // 90'dan 80'e düşürüldü
     fit: 'crop' as const,
-    sizes: "64px"
+    fetchPriority: 'low' as const,
+    sizes: "48px"
   },
   
-  // OG image (sosyal medya)
+  // OG image (sosyal medya) - kalite düşürüldü
   og: {
     width: 1200,
     height: 630,
-    quality: 90,
+    quality: 80, // 90'dan 80'e düşürüldü
     format: 'jpg' as const,
-    fit: 'crop' as const
+    fit: 'crop' as const,
+    fetchPriority: 'high' as const
   }
 } as const

@@ -1,4 +1,5 @@
 import { downloadFavicons } from './scripts/download-favicons.js'
+import { downloadLogo } from './scripts/download-logo.js'
 import dotenv from 'dotenv'
 
 // Environment variables'ları açıkça yükle
@@ -6,6 +7,7 @@ dotenv.config()
 
 // Build sırasında sadece bir kez çalıştırmak için global flag
 let faviconDownloaded = false
+let logoDownloaded = false
 
 // SSL sertifika doğrulamasını geliştirme ortamında devre dışı bırak
 if (process.env.NODE_ENV !== 'production') {
@@ -42,14 +44,16 @@ const nextConfig = {
       }
     ],
     formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60 * 60 * 24 * 7, // 1 week
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920], // Responsive breakpoints
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // Fixed sizes
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Build başlangıcında favicon'ları indir (sadece ilk build'de)
+    // Build başlangıcında favicon'ları ve logo'yu indir (sadece ilk build'de)
     if (!dev && isServer && !faviconDownloaded) {
       faviconDownloaded = true
       
@@ -62,6 +66,22 @@ const nextConfig = {
         })
         .catch(error => {
           console.warn('⚠️ Favicon indirme başarısız, varsayılan favicon\'lar kullanılacak:', error.message)
+        })
+    }
+
+    // Logo download
+    if (!dev && isServer && !logoDownloaded) {
+      logoDownloaded = true
+      
+      console.log('🎯 Logo indirme işlemi başlatılıyor...')
+      
+      // Logo indirme işlemini background'da çalıştır
+      downloadLogo()
+        .then(() => {
+          console.log('✅ Logo indirme tamamlandı')
+        })
+        .catch(error => {
+          console.warn('⚠️ Logo indirme başarısız, placeholder logo kullanılacak:', error.message)
         })
     }
     

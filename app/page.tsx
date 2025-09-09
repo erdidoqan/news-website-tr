@@ -1,16 +1,7 @@
 import type { Metadata } from "next"
 import { ModernHeader } from "@/components/modern-header"
 import { BreakingNews } from "@/components/breaking-news"
-import { TopStoriesSection } from "@/components/top-stories-section"
-import { SecondaryStoriesGrid } from "@/components/secondary-stories-grid"
-import { BreakingNewsCards } from "@/components/breaking-news-cards"
 import { Sidebar } from "@/components/sidebar"
-import { EditorsPick } from "@/components/editors-pick"
-import { OpinionVoices } from "@/components/opinion-voices"
-import { GuidesSection } from "@/components/guides-section"
-import { ArtsLifestyle } from "@/components/arts-lifestyle"
-import { TrendingSection } from "@/components/trending-section"
-import { WorldNation } from "@/components/world-nation"
 import { FooterSections } from "@/components/footer-sections"
 import { Footer } from "@/components/footer"
 import { TrendingStories } from "@/components/trending-stories"
@@ -25,15 +16,16 @@ export async function generateMetadata(): Promise<Metadata> {
     const siteInfo = siteResponse.data
     
     if (siteInfo) {
+      const siteName = siteInfo.name
       return {
-        title: siteInfo.settings?.seo?.meta_title || `${siteInfo.name} - Güncel Haberler ve Analizler`,
+        title: siteInfo.settings?.seo?.meta_title || `${siteName} - Güncel Haberler ve Analizler`,
         description: siteInfo.settings?.seo?.meta_description || siteInfo.description || "En güncel haberler, son dakika gelişmeleri ve derinlemesine analizler. Teknoloji, ekonomi, siyaset ve daha fazlası.",
         keywords: siteInfo.settings?.seo?.meta_keywords || "haber, güncel, son dakika, analiz, teknoloji, ekonomi, siyaset",
         openGraph: {
-          title: siteInfo.name || "Haber Merkezi",
+          title: siteName,
           description: siteInfo.description || "En güncel haberler ve analizler",
           url: siteInfo.domain || "http://localhost:3000",
-          siteName: siteInfo.name || "Haber Merkezi",
+          siteName: siteName,
           locale: siteInfo.language === 'tr' ? 'tr_TR' : 'en_US',
           type: 'website',
           images: siteInfo.logo?.url ? [{
@@ -45,7 +37,7 @@ export async function generateMetadata(): Promise<Metadata> {
         },
         twitter: {
           card: 'summary_large_image',
-          title: siteInfo.name || "Haber Merkezi",
+          title: siteName,
           description: siteInfo.description || "En güncel haberler ve analizler",
           images: siteInfo.logo?.url ? [siteInfo.logo.url] : [],
           creator: '@habermerkezi',
@@ -139,43 +131,73 @@ export default async function HomePage() {
 
         <BreakingNews />
 
-        <main className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
-            {/* Main content area */}
-            <div className="lg:col-span-3 space-y-8">
-              <TopStoriesSection />
-              <SecondaryStoriesGrid />
-              
-              {/* Homepage News List */}
-              <HomepageNewsList 
-                title="Son Haberler"
-                limit={12}
-                showLoadMore={true}
-                className="pt-8 border-t border-gray-200"
-              />
-            </div>
-
-            {/* Sidebar - hidden on mobile, shown on desktop */}
-            <div className="hidden lg:block lg:col-span-1">
-              <Sidebar />
-            </div>
+        <main className="max-w-7xl mx-auto px-4 py-4 sm:py-6">
+          {/* Ana haber listesi - tam genişlik, daha yoğun */}
+          <div className="mb-8">
+            <HomepageNewsList 
+              title="Son Haberler"
+              limit={24}
+              showLoadMore={true}
+              className=""
+            />
           </div>
 
-          {/* Mobile sidebar content - only show newspaper preview and trending on mobile */}
-          <div className="lg:hidden mt-8 space-y-6">
+          {/* İki sütun layout - kategoriler */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <HomepageNewsList 
+              title="Teknoloji"
+              categorySlug="yazilim-gelisim"
+              limit={6}
+              showLoadMore={false}
+              compact={true}
+              className="border border-gray-200 rounded-lg p-6"
+            />
+            
+            <HomepageNewsList 
+              title="Donanım"
+              categorySlug="donanim-yenilikler"
+              limit={6}
+              showLoadMore={false}
+              compact={true}
+              className="border border-gray-200 rounded-lg p-6"
+            />
+          </div>
+
+          {/* Üç sütun layout - daha fazla kategori */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <HomepageNewsList 
+              title="Mobil"
+              categorySlug="mobil-uygulamalar"
+              limit={4}
+              showLoadMore={false}
+              compact={true}
+              className="border border-gray-200 rounded-lg p-4"
+            />
+            
+            <HomepageNewsList 
+              title="AI & Blockchain"
+              categorySlug="ai"
+              limit={4}
+              showLoadMore={false}
+              compact={true}
+              className="border border-gray-200 rounded-lg p-4"
+            />
+            
+            <HomepageNewsList 
+              title="İncelemeler"
+              categorySlug="incelemeler"
+              limit={4}
+              showLoadMore={false}
+              compact={true}
+              className="border border-gray-200 rounded-lg p-4"
+            />
+          </div>
+
+          {/* Mobile trending */}
+          <div className="lg:hidden">
             <TrendingStories />
           </div>
         </main>
-
-        <BreakingNewsCards />
-
-        <EditorsPick />
-        <OpinionVoices />
-        <GuidesSection />
-        <ArtsLifestyle />
-        <TrendingSection />
-
-        <WorldNation />
 
         <FooterSections />
 

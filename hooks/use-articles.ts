@@ -37,7 +37,7 @@ export function useArticles(initialOptions: UseArticlesOptions = {}): UseArticle
 
   const {
     page = 1,
-    perPage = 20,
+    perPage = 30, // 20'den 30'a artırıldı - daha fazla haber
     status = 'published',
     category,
     tag,

@@ -164,16 +164,18 @@ export function ModernHeader() {
               >
                 <button
                         onClick={() => handleMegaMenuToggle(item.id)}
-                  className={`relative text-black text-sm font-medium h-full flex items-center hover:text-red-600 transition-colors ${
-                          isOpen ? "text-red-600" : ""
-                  }`}
+                        aria-label={`${item.label} menüsünü ${isOpen ? 'kapat' : 'aç'}`}
+                        aria-expanded={isOpen}
+                                          className={`relative text-black text-sm font-medium h-full flex items-center hover:text-primary transition-colors ${
+                          isOpen ? "text-primary" : ""
+                        }`}
                 >
                         {item.label}
                   <ChevronDown
                           className={`ml-1 h-4 w-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
                   />
                   <span
-                    className={`absolute bottom-0 left-0 block h-px w-full bg-red-600 transition-transform duration-300 ease-out ${
+                    className={`absolute bottom-0 left-0 block h-px w-full bg-primary transition-transform duration-300 ease-out ${
                             isOpen ? "scale-x-100" : "scale-x-0"
                     }`}
                   />
@@ -186,10 +188,10 @@ export function ModernHeader() {
                       key={item.id}
                       href={item.url || `/${item.name.toLowerCase().replace(/\s+/g, '-')}`}
                       target={item.target}
-                  className="group relative text-black text-sm font-medium h-full flex items-center hover:text-red-600 transition-colors"
+                                        className="group relative text-black text-sm font-medium h-full flex items-center hover:text-primary transition-colors"
                 >
                       {item.label}
-                  <span className="absolute bottom-0 left-0 block h-px w-full bg-red-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
+                  <span className="absolute bottom-0 left-0 block h-px w-full bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
                 </Link>
                   )
                 }
@@ -201,14 +203,24 @@ export function ModernHeader() {
               <div className="hidden md:flex items-center gap-x-5">
                 <Link
                   href="/kategori"
-                  className="text-black text-sm font-medium hover:text-red-600 transition-colors"
+                  className="text-black text-sm font-medium hover:text-primary transition-colors"
                 >
                   Kategoriler
                 </Link>
-                <Button variant="ghost" size="icon" className="text-black hover:bg-gray-100 hover:text-red-600">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-black hover:bg-gray-100 hover:text-primary"
+                  aria-label="Arama"
+                >
                   <Search className="w-5 h-5" />
                 </Button>
-                <Button variant="ghost" size="icon" className="text-black hover:bg-gray-100 hover:text-red-600">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-black hover:bg-gray-100 hover:text-primary"
+                  aria-label="Kullanıcı hesabı"
+                >
                   <User className="w-5 h-5" />
                 </Button>
               </div>
@@ -218,6 +230,7 @@ export function ModernHeader() {
                 size="icon"
                 className="md:hidden text-black hover:bg-gray-100"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label={isMobileMenuOpen ? "Menüyü kapat" : "Menüyü aç"}
               >
                 <AnimatedHamburger isOpen={isMobileMenuOpen} />
               </Button>
@@ -239,7 +252,9 @@ export function ModernHeader() {
                     <div key={item.id} className="border-b border-gray-100">
                 <button
                         onClick={() => handleMobileMegaMenuToggle(item.id)}
-                  className="w-full flex items-center justify-between text-lg font-semibold hover:text-red-600 transition-colors py-4"
+                        aria-label={`${item.label} mobil menüsünü ${isMobileOpen ? 'kapat' : 'aç'}`}
+                        aria-expanded={isMobileOpen}
+                                          className="w-full flex items-center justify-between text-lg font-semibold hover:text-primary transition-colors py-4"
                 >
                         {item.label}
                         <ChevronDown className={`w-5 h-5 transition-transform ${isMobileOpen ? "rotate-180" : ""}`} />
@@ -254,7 +269,7 @@ export function ModernHeader() {
                             <Link
                               key={link.href}
                               href={link.href}
-                              className="block text-base text-gray-600 hover:text-red-600 transition-colors py-2"
+                              className="block text-base text-gray-600 hover:text-primary transition-colors py-2"
                               onClick={() => setIsMobileMenuOpen(false)}
                             >
                               {link.label}
@@ -273,7 +288,7 @@ export function ModernHeader() {
                     <Link
                         href={item.url || `/${item.name.toLowerCase().replace(/\s+/g, '-')}`}
                         target={item.target}
-                      className="block text-lg font-semibold hover:text-red-600 transition-colors py-4"
+                      className="block text-lg font-semibold hover:text-primary transition-colors py-4"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                         {item.label}
@@ -287,7 +302,7 @@ export function ModernHeader() {
               <div className="border-b border-gray-100">
                 <Link
                   href="/kategori"
-                  className="block text-lg font-semibold hover:text-red-600 transition-colors py-4"
+                  className="block text-lg font-semibold hover:text-primary transition-colors py-4"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Tüm Kategoriler

@@ -1,48 +1,41 @@
 {
-  "lastUpdated": "2025-08-28T10:14:15.821Z",
-  "siteName": "Temp Site",
+  "lastUpdated": "2025-09-09T18:40:15.913Z",
+  "siteName": "Neereli",
   "favicons": [
     {
       "name": "favicon-16x16",
       "size": "16x16",
-      "filename": "favicon-16x16-1755206412.png",
-      "localPath": "/favicons/favicon-16x16-1755206412.png",
-      "originalUrl": "https://cdn.icerikplanla.com/favicons/site-1/favicon-16x16-1755206412.png?t=1755206412"
+      "filename": "favicon-16x16-1756895559.png",
+      "localPath": "/favicons/favicon-16x16-1756895559.png",
+      "originalUrl": "https://cdn.icerikplanla.com/favicons/site-102/favicon-16x16-1756895559.png?t=1756895559"
     },
     {
       "name": "favicon-32x32",
       "size": "32x32",
-      "filename": "favicon-32x32-1755206412.png",
-      "localPath": "/favicons/favicon-32x32-1755206412.png",
-      "originalUrl": "https://cdn.icerikplanla.com/favicons/site-1/favicon-32x32-1755206412.png?t=1755206412"
+      "filename": "favicon-32x32-1756895559.png",
+      "localPath": "/favicons/favicon-32x32-1756895559.png",
+      "originalUrl": "https://cdn.icerikplanla.com/favicons/site-102/favicon-32x32-1756895559.png?t=1756895559"
     },
     {
       "name": "apple-touch-icon",
       "size": "180x180",
-      "filename": "apple-touch-icon-1755206412.png",
-      "localPath": "/favicons/apple-touch-icon-1755206412.png",
-      "originalUrl": "https://cdn.icerikplanla.com/favicons/site-1/apple-touch-icon-1755206412.png?t=1755206412"
+      "filename": "apple-touch-icon-1756895559.png",
+      "localPath": "/favicons/apple-touch-icon-1756895559.png",
+      "originalUrl": "https://cdn.icerikplanla.com/favicons/site-102/apple-touch-icon-1756895559.png?t=1756895559"
     },
     {
       "name": "android-chrome-192x192",
       "size": "192x192",
-      "filename": "android-chrome-192x192-1755206412.png",
-      "localPath": "/favicons/android-chrome-192x192-1755206412.png",
-      "originalUrl": "https://cdn.icerikplanla.com/favicons/site-1/android-chrome-192x192-1755206412.png?t=1755206412"
+      "filename": "android-chrome-192x192-1756895559.png",
+      "localPath": "/favicons/android-chrome-192x192-1756895559.png",
+      "originalUrl": "https://cdn.icerikplanla.com/favicons/site-102/android-chrome-192x192-1756895559.png?t=1756895559"
     },
     {
       "name": "android-chrome-512x512",
       "size": "512x512",
-      "filename": "android-chrome-512x512-1755206412.png",
-      "localPath": "/favicons/android-chrome-512x512-1755206412.png",
-      "originalUrl": "https://cdn.icerikplanla.com/favicons/site-1/android-chrome-512x512-1755206412.png?t=1755206412"
-    },
-    {
-      "name": "favicon",
-      "size": "ico",
-      "filename": "favicon-1755206412.ico",
-      "localPath": "/favicons/favicon-1755206412.ico",
-      "originalUrl": "https://cdn.icerikplanla.com/favicons/site-1/favicon-1755206412.ico?t=1755206412"
+      "filename": "android-chrome-512x512-1756895559.png",
+      "localPath": "/favicons/android-chrome-512x512-1756895559.png",
+      "originalUrl": "https://cdn.icerikplanla.com/favicons/site-102/android-chrome-512x512-1756895559.png?t=1756895559"
     }
   ]
 }

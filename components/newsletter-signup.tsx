@@ -14,7 +14,7 @@ export function NewsletterSignup() {
 
       <div className="space-y-3">
         <Input type="email" placeholder="E-posta adresiniz" className="bg-white text-gray-900 border-gray-300" />
-        <Button className="w-full bg-red-600 hover:bg-red-700 text-white">Abone Ol</Button>
+        <Button className="w-full bg-primary hover:bg-primary text-white">Abone Ol</Button>
       </div>
 
       <p className="text-xs text-gray-400 mt-3">İstediğiniz zaman abonelikten çıkabilirsiniz.</p>

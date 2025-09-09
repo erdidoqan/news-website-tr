@@ -11,6 +11,7 @@ interface OptimizedImageProps {
     priority?: boolean
     className?: string
     sizes?: string
+    fetchPriority?: 'high' | 'low' | 'auto'
   }
   fill?: boolean
   onClick?: () => void

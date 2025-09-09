@@ -75,13 +75,13 @@ export function RelatedArticles({ category, currentSlug }: RelatedArticlesProps)
 
             <div className="p-4">
               <div className="flex items-center gap-2 mb-2">
-                <Badge variant="secondary" className="text-xs bg-red-100 text-red-800">
+                <Badge variant="secondary" className="text-xs bg-primary-10 text-primary">
                   {article.category}
                 </Badge>
                 <span className="text-xs text-gray-500">{article.readTime} dk</span>
               </div>
 
-              <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-red-600 transition-colors line-clamp-2">
+              <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-primary transition-colors line-clamp-2">
                 {article.title}
               </h3>
 

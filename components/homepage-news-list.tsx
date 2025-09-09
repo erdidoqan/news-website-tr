@@ -15,6 +15,7 @@ interface HomepageNewsListProps {
   showLoadMore?: boolean
   title?: string
   className?: string
+  compact?: boolean // Kompakt görünüm için
 }
 
 export function HomepageNewsList({
@@ -23,7 +24,8 @@ export function HomepageNewsList({
   limit = 12,
   showLoadMore = true,
   title = "Son Haberler",
-  className = ""
+  className = "",
+  compact = false
 }: HomepageNewsListProps) {
   const { articles, loading, error, pagination, fetchArticles } = useArticles({
     perPage: limit,
@@ -76,10 +78,10 @@ export function HomepageNewsList({
           {title}
         </h2>
         <div className="text-center py-8">
-          <p className="text-red-600 mb-4">Haberler yüklenirken bir hata oluştu.</p>
+          <p className="text-primary mb-4">Haberler yüklenirken bir hata oluştu.</p>
           <button 
             onClick={() => window.location.reload()}
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+            className="bg-primary text-white px-4 py-2 rounded hover:bg-primary transition-colors"
           >
             Tekrar Dene
           </button>
@@ -88,21 +90,14 @@ export function HomepageNewsList({
     )
   }
 
+  // Haber yoksa component'i gösterme
   if (articles.length === 0) {
-    return (
-      <div className={`space-y-6 ${className}`}>
-        <h2 className="text-2xl md:text-3xl font-serif font-bold text-gray-900">
-          {title}
-        </h2>
-        <div className="text-center py-8 text-gray-500">
-          <p>Henüz haber bulunmuyor.</p>
-        </div>
-      </div>
-    )
+    return null
   }
 
-  // İlk haber featured olacak, geri kalanlar grid'de
-  const [featuredArticle, ...gridArticles] = articles
+  // Compact mode'da featured article yok, hepsi grid'de
+  const featuredArticle = compact ? null : articles[0]
+  const gridArticles = compact ? articles : articles.slice(1)
 
   return (
     <div className={`space-y-8 ${className}`}>
@@ -113,7 +108,7 @@ export function HomepageNewsList({
         </h2>
         <Link 
           href="/haberler" 
-          className="flex items-center gap-2 text-red-600 hover:text-red-700 transition-colors font-medium"
+          className="flex items-center gap-2 text-primary hover:text-primary transition-colors font-medium"
         >
           Tümünü Gör
           <ArrowRight className="w-4 h-4" />
@@ -159,7 +154,7 @@ export function HomepageNewsList({
                   href={`/${featuredArticle.slug}`}
                   className="block group"
                 >
-                  <h3 className="text-xl md:text-2xl font-serif font-bold text-gray-900 group-hover:text-red-600 transition-colors leading-tight">
+                  <h3 className="text-xl md:text-2xl font-serif font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight">
                     {featuredArticle.title}
                   </h3>
                 </Link>
@@ -203,7 +198,11 @@ export function HomepageNewsList({
 
       {/* News Grid */}
       {gridArticles.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className={`grid gap-4 ${
+          compact 
+            ? "grid-cols-1 gap-3" // Compact mode: tek sütun, küçük gap
+            : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" // Normal mode
+        }`}>
           {gridArticles.map((article) => (
             <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
               {/* Image */}
@@ -235,12 +234,14 @@ export function HomepageNewsList({
               </div>
 
               {/* Content */}
-              <CardContent className="p-4 space-y-3">
+              <CardContent className={`space-y-3 ${compact ? 'p-3' : 'p-4'}`}>
                 <Link 
                   href={`/${article.slug}`}
                   className="block group"
                 >
-                  <h3 className="font-serif font-bold text-gray-900 group-hover:text-red-600 transition-colors leading-tight line-clamp-2">
+                  <h3 className={`font-serif font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight line-clamp-2 ${
+                    compact ? 'text-base' : 'text-lg'
+                  }`}>
                     {article.title}
                   </h3>
                 </Link>

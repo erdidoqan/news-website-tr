@@ -1,8 +1,8 @@
-import Image from "next/image"
 import Link from "next/link"
 import { Calendar, Clock, Eye, Share2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { OptimizedImage, AvatarImage, ArticleImage } from "@/components/optimized-image"
 
 interface Author {
   name: string
@@ -44,7 +44,7 @@ export function NewsDetailContent({ article }: NewsDetailContentProps) {
       {/* Article Header */}
       <header className="mb-8">
         <div className="flex items-center gap-2 mb-4">
-          <Badge variant="secondary" className="bg-red-100 text-red-800 hover:bg-red-200">
+          <Badge variant="secondary" className="bg-primary-10 text-primary hover:bg-primary-20">
             {article.category}
           </Badge>
           <span className="text-sm text-gray-500">•</span>
@@ -61,11 +61,9 @@ export function NewsDetailContent({ article }: NewsDetailContentProps) {
         {/* Article Meta */}
         <div className="flex flex-wrap items-center gap-6 py-4 border-y border-gray-200">
           <div className="flex items-center gap-3">
-            <Image
-              src={article.author.avatar || "/placeholder.svg"}
+            <AvatarImage
+              src={article.author.avatar || "/placeholder-user.jpg"}
               alt={article.author.name}
-              width={40}
-              height={40}
               className="rounded-full"
             />
             <div>
@@ -94,21 +92,36 @@ export function NewsDetailContent({ article }: NewsDetailContentProps) {
 
       {/* Featured Image */}
       <div className="mb-8">
-        <Image
-          src={article.imageUrl || "/placeholder.svg"}
+        <ArticleImage
+          src={article.imageUrl || "/placeholder.jpg"}
           alt={article.title}
-          width={800}
-          height={400}
           className="w-full h-auto rounded-lg shadow-lg"
-          priority
         />
       </div>
 
       {/* Article Content */}
-      <div
-        className="prose prose-lg max-w-none prose-headings:font-serif prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline prose-blockquote:border-l-red-500 prose-blockquote:bg-gray-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-ul:text-gray-700 prose-li:text-gray-700"
-        dangerouslySetInnerHTML={{ __html: article.content }}
-      />
+      <div className="article-content">
+        <div
+          className="prose prose-lg max-w-none 
+            prose-headings:font-serif prose-headings:text-gray-900 prose-headings:mb-4 prose-headings:mt-8
+            prose-p:text-gray-800 prose-p:leading-[1.8] prose-p:mb-6 prose-p:text-[18px]
+            prose-a:text-primary prose-a:no-underline prose-a:font-medium hover:prose-a:underline
+            prose-strong:text-gray-900 prose-strong:font-semibold
+            prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-gray-50 
+            prose-blockquote:py-6 prose-blockquote:px-8 prose-blockquote:rounded-r-lg prose-blockquote:my-8
+            prose-blockquote:text-gray-800 prose-blockquote:italic prose-blockquote:text-lg
+            prose-ul:text-gray-800 prose-ul:space-y-2 prose-ul:mb-6
+            prose-li:text-gray-800 prose-li:leading-relaxed
+            prose-ol:text-gray-800 prose-ol:space-y-2 prose-ol:mb-6
+            prose-h1:text-3xl prose-h1:font-bold prose-h1:text-gray-900
+            prose-h2:text-2xl prose-h2:font-bold prose-h2:text-gray-900 prose-h2:border-b prose-h2:border-gray-200 prose-h2:pb-2
+            prose-h3:text-xl prose-h3:font-semibold prose-h3:text-gray-900
+            prose-h4:text-lg prose-h4:font-semibold prose-h4:text-gray-900
+            prose-img:rounded-lg prose-img:shadow-md prose-img:my-8
+            first:prose-p:text-xl first:prose-p:font-medium first:prose-p:text-gray-900 first:prose-p:leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: article.content }}
+        />
+      </div>
 
       {/* Tags */}
       <div className="mt-8 pt-6 border-t border-gray-200">

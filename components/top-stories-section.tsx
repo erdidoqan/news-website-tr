@@ -27,7 +27,7 @@ export function TopStoriesSection() {
     <section className="py-8">
       <div className="mb-8">
         <h2 className="font-serif text-3xl font-bold text-gray-900 mb-2">Öne Çıkan Haberler</h2>
-        <div className="w-16 h-1 bg-red-600"></div>
+        <div className="w-16 h-1 bg-primary"></div>
       </div>
 
       <MainArticle {...mockMainStory} />

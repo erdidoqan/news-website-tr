@@ -1,5 +1,5 @@
-import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
+import { OptimizedImage } from "@/components/optimized-image"
 
 interface MainArticleProps {
   title: string
@@ -50,13 +50,15 @@ export function MainArticle({
       </div>
 
       <div className="relative order-1 lg:order-2">
-        <Image
+        <OptimizedImage
           src={imageUrl || "/placeholder.svg"}
           alt={imageAlt}
-          width={600}
-          height={400}
-          className="w-full h-[250px] sm:h-[300px] lg:h-[400px] object-cover rounded-lg shadow-lg"
-          priority
+          preset="hero"
+          options={{
+            className: "w-full h-[250px] sm:h-[300px] lg:h-[400px] object-cover rounded-lg shadow-lg",
+            priority: true,
+            fetchPriority: 'high'
+          }}
         />
       </div>
     </article>

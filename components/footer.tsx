@@ -6,6 +6,11 @@ import { useSiteContext } from './site-provider'
 
 export function Footer() {
   const { siteInfo } = useSiteContext()
+  
+  // API'den gelen site adını ve açıklamasını kullan
+  const siteName = siteInfo?.name || 'Haber Merkezi'
+  const siteDescription = siteInfo?.description || 'Bir Türkiye Medya Yayını'
+  
   return (
     <footer className="bg-black text-white">
       <div className="max-w-7xl mx-auto px-4 py-12">
@@ -15,10 +20,10 @@ export function Footer() {
           <div className="space-y-6">
             <div>
               <h3 className="text-2xl font-serif font-bold mb-2">
-                {siteInfo?.name || 'Haber Merkezi'}
+                {siteName}
               </h3>
               <p className="text-gray-300 text-sm">
-                {siteInfo?.description || 'Bir Türkiye Medya Yayını'}
+                {siteDescription}
               </p>
             </div>
 
@@ -66,34 +71,11 @@ export function Footer() {
                     <Facebook className="w-4 h-4" />
                   </Link>
                 )}
-                {/* Show fallback social links if no site social media data */}
+                {/* Show placeholder message if no social media data */}
                 {(!siteInfo?.social_media || Object.values(siteInfo.social_media).every(v => !v)) && (
-                  <>
-                    <Link
-                      href="#"
-                      className="w-8 h-8 border border-gray-600 rounded flex items-center justify-center hover:border-gray-400 transition-colors"
-                    >
-                      <span className="text-xs font-bold">X</span>
-                    </Link>
-                    <Link
-                      href="#"
-                      className="w-8 h-8 border border-gray-600 rounded flex items-center justify-center hover:border-gray-400 transition-colors"
-                    >
-                      <Instagram className="w-4 h-4" />
-                    </Link>
-                    <Link
-                      href="#"
-                      className="w-8 h-8 border border-gray-600 rounded flex items-center justify-center hover:border-gray-400 transition-colors"
-                    >
-                      <Youtube className="w-4 h-4" />
-                    </Link>
-                    <Link
-                      href="#"
-                      className="w-8 h-8 border border-gray-600 rounded flex items-center justify-center hover:border-gray-400 transition-colors"
-                    >
-                      <Facebook className="w-4 h-4" />
-                    </Link>
-                  </>
+                  <p className="text-sm text-gray-500">
+                    Sosyal medya hesapları yakında eklenecek.
+                  </p>
                 )}
               </div>
             </div>
@@ -165,7 +147,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="text-xs text-gray-400">
               <p>
-                Telif Hakkı © 2025, {siteInfo?.name || 'Haber Merkezi'} |{" "}
+                Telif Hakkı © 2025, {siteName} |{" "}
                 <Link href="/terms" className="hover:text-gray-300 transition-colors">
                   Hizmet Şartları
                 </Link>{" "}

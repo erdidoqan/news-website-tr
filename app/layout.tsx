@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter, Playfair_Display } from "next/font/google"
 import { siteApi } from "@/lib/site-api"
 import { getFaviconLinks } from "@/lib/favicon-utils"
+
 import "./globals.css"
 
 const inter = Inter({
@@ -27,9 +28,10 @@ export async function generateMetadata(): Promise<Metadata> {
     const faviconLinks = getFaviconLinks()
     
     if (siteInfo) {
+      const siteName = siteInfo.name
                  return {
              metadataBase: new URL(siteInfo.domain || 'http://localhost:3000'),
-             title: siteInfo.settings.seo.meta_title || siteInfo.name || "Haber Sitesi - Güncel Haberler",
+             title: siteInfo.settings.seo.meta_title || siteName || "Haber Sitesi - Güncel Haberler",
              description: siteInfo.settings.seo.meta_description || siteInfo.description || "En güncel haberler ve analizler",
              keywords: siteInfo.settings.seo.meta_keywords || undefined,
              generator: "News Website",
@@ -41,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
         })),
         openGraph: {
           type: 'website',
-          siteName: siteInfo.name || "Haber Merkezi",
+          siteName: siteName,
           locale: siteInfo.language === 'tr' ? 'tr_TR' : 'en_US',
         },
         twitter: {
